@@ -21,7 +21,7 @@ public class Sanglier extends Produit {
 	@Override
 	public int calculerPrix(int prix) {
 		//ici la norme est 1250g = 1 sanglier
-		return (poids*prix)/1250;
+		return (poids*prix)/1000;
 	}
 
 }

@@ -13,12 +13,12 @@ public class Scenario {
 		IVillage village = new IVillage(){
 			
 			private int nbVendeurs = 0;
-			private static final int nbVendeursMax = 3;
-			private IEtal[] marche  = new IEtal[nbVendeursMax];
+			private static final int NB_VENDEUR_MAX = 3;
+			private IEtal[] marche  = new IEtal[NB_VENDEUR_MAX];
 			
 			@Override
 			public <P extends Produit> boolean installerVendeur(Etal<P> etal, Gaulois vendeur, P[] produit, int prix) {
-				if(nbVendeurs != nbVendeursMax) {
+				if(nbVendeurs != NB_VENDEUR_MAX) {
 					Etal<P> newEtal = new Etal<>();
 					newEtal.installerVendeur(vendeur, produit, prix);
 					marche[nbVendeurs] = newEtal;
@@ -40,16 +40,24 @@ public class Scenario {
 					
 					int prix = marche[i].acheterProduit(quantiteAchetee);
 					
-					System.out.println("j'achï¿½te "+ quantiteAchetee  + " a l'etal " + (i+1) + " pour tant de sous : " +prix);
+					System.out.println("à l'étal "+ (i+1)  + " j'achète " + quantiteAchetee + " " + produit+  " pour " +prix + " sous");
 					nbProduits += quantiteAchetee;
 				}
-				System.out.println("Je voulais " + quantite + " " + produit + ", j'en ai achetÃ© " + nbProduits);
+				System.out.println("Je voulais " + quantite + " " + produit + ", j'en ai achetÃ© " + nbProduits +"\n");
+			}
+			
+			public String toString() {
+				StringBuilder chaine = new StringBuilder();
+				for (int i = 0; i < marche.length; i++) {
+					chaine.append(marche[i].etatEtal());
+				}
+				return chaine.toString();
 			}
 		};
 		
-		Gaulois ordralfabetix = new Gaulois("OrdralfabÃ©tix", 9);
-		Gaulois obelix = new Gaulois("ObÃ©lix", 20);
-		Gaulois asterix = new Gaulois("AstÃ©rix", 6);
+		Gaulois ordralfabetix = new Gaulois("Ordralfabétix", 9);
+		Gaulois obelix = new Gaulois("Obélix", 20);
+		Gaulois asterix = new Gaulois("Astérix", 6);
 
 		Etal<Sanglier> etalSanglierObelix = new Etal<>();
 		Etal<Sanglier> etalSanglierAsterix = new Etal<>();
