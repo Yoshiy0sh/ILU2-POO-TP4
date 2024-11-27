@@ -1,18 +1,52 @@
 package scenarioTest;
 
 import personnages.Gaulois;
-import produits.Poisson;
-import produits.Sanglier;
-import villagegaulois.Etal;
+import produit.Poisson;
+import produit.Produit;
+import produit.Sanglier;
+import villagegaulois.*;
 
 public class Scenario {
 
 	public static void main(String[] args) {
 
-		// TODO Partie 4 : creer de la classe anonyme Village
-
-		// fin
-
+		IVillage village = new IVillage(){
+			
+			private int nbVendeurs = 0;
+			private static final int nbVendeursMax = 3;
+			private IEtal[] marche  = new IEtal[nbVendeursMax];
+			
+			@Override
+			public <P extends Produit> boolean installerVendeur(Etal<P> etal, Gaulois vendeur, P[] produit, int prix) {
+				if(nbVendeurs != nbVendeursMax) {
+					Etal<P> newEtal = new Etal<>();
+					newEtal.installerVendeur(vendeur, produit, prix);
+					marche[nbVendeurs] = newEtal;
+					nbVendeurs++;
+					return true;
+				}
+				else return false;
+			}
+			
+			
+			@Override
+			public void acheterProduit(String produit, int quantite) {
+				int nbProduits = 0;
+				for (int i = 0; i < marche.length && nbProduits < quantite; i++) {
+					int quantiteDispo = marche[i].contientProduit(produit, quantite);
+					int quantiteSouhaitee = quantite - nbProduits;
+					
+					int quantiteAchetee = Math.min(quantiteSouhaitee,quantiteDispo);
+					
+					int prix = marche[i].acheterProduit(quantiteAchetee);
+					
+					System.out.println("j'ach�te "+ quantiteAchetee  + " a l'etal " + (i+1) + " pour tant de sous : " +prix);
+					nbProduits += quantiteAchetee;
+				}
+				System.out.println("Je voulais " + quantite + " " + produit + ", j'en ai acheté " + nbProduits);
+			}
+		};
+		
 		Gaulois ordralfabetix = new Gaulois("Ordralfabétix", 9);
 		Gaulois obelix = new Gaulois("Obélix", 20);
 		Gaulois asterix = new Gaulois("Astérix", 6);
